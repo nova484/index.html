@@ -100,7 +100,6 @@ document.getElementById("cityInput").addEventListener("keydown", function (e) {
   if (e.key === "Enter") getWeather();
 });
 
-// Remember dark mode preference
 if (localStorage.getItem("darkMode") === "true") {
   document.body.classList.add("dark-mode");
   document.getElementById("modeBtn").textContent = "☀️ Light";
