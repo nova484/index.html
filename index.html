@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Monitor</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="app-label">⬡ Weather Monitor</div>
+      <div class="header-right">
+        <div class="date-label" id="dateLabel"></div>
+        <button class="mode-toggle" onclick="toggleDarkMode()" id="modeBtn">🌙 Dark</button>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="search-bar">
+      <div class="search-wrapper">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="cityInput" placeholder="Search city..." />
+      </div>
+      <button onclick="getWeather()">Search</button>
+    </div>
+
+    <!-- Error -->
+    <div id="errorMsg" class="error-msg"></div>
+
+    <!-- Loading -->
+    <div id="loadingState" class="loading-state">
+      <span class="loading-dot"></span>
+      <span class="loading-dot"></span>
+      <span class="loading-dot"></span>
+    </div>
+
+    <!-- Result -->
+    <div id="result">
+
+      <div class="main-card">
+        <div class="card-top">
+          <div>
+            <div class="city-label">Current Weather</div>
+            <div id="cityName"></div>
+            <div id="localTime" class="local-time"></div>
+          </div>
+          <div id="weatherIcon"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="temp-row">
+          <div id="temp"></div>
+          <div class="temp-meta">
+            <div id="condition"></div>
+            <div id="highLow" class="high-low"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon">💧</div>
+          <div class="stat-label">Humidity</div>
+          <div class="stat-value" id="humidity">-</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">💨</div>
+          <div class="stat-label">Wind</div>
+          <div class="stat-value" id="wind">-</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🌡️</div>
+          <div class="stat-label">Feels Like</div>
+          <div class="stat-value" id="feelsLike">-</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">👁️</div>
+          <div class="stat-label">Visibility</div>
+          <div class="stat-value" id="visibility">-</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🌅</div>
+          <div class="stat-label">Sunrise</div>
+          <div class="stat-value" id="sunrise">-</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🌇</div>
+          <div class="stat-label">Sunset</div>
+          <div class="stat-value" id="sunset">-</div>
+        </div>
+      </div>
+
+      <div class="result-footer">
+        <span id="lastUpdated"></span>
+        <span class="powered-by">OpenWeatherMap</span>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
