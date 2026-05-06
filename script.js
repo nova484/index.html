@@ -100,6 +100,98 @@ document.getElementById("cityInput").addEventListener("keydown", function (e) {
   if (e.key === "Enter") getWeather();
 });
 
+// ── Speed Test ──────────────────────────────────────
+
+async function measurePing() {
+  const times = [];
+  for (let i = 0; i < 5; i++) {
+    const start = performance.now();
+    try {
+      await fetch(`https://www.cloudflare.com/cdn-cgi/trace?t=${Date.now()}`, { cache: "no-store" });
+      times.push(performance.now() - start);
+    } catch {}
+  }
+  if (times.length === 0) return null;
+  return Math.round(times.reduce((a, b) => a + b, 0) / times.length);
+}
+
+async function measureDownload() {
+  const fileSizeMB = 5;
+  const url = `https://speed.cloudflare.com/__down?bytes=${fileSizeMB * 1024 * 1024}&t=${Date.now()}`;
+  const start = performance.now();
+  try {
+    const res = await fetch(url, { cache: "no-store" });
+    await res.blob();
+    const duration = (performance.now() - start) / 1000;
+    return ((fileSizeMB * 8) / duration).toFixed(1);
+  } catch {
+    return null;
+  }
+}
+
+async function measureUpload() {
+  const fileSizeMB = 2;
+  const data = new Uint8Array(fileSizeMB * 1024 * 1024);
+  const url = `https://speed.cloudflare.com/__up?t=${Date.now()}`;
+  const start = performance.now();
+  try {
+    await fetch(url, {
+      method: "POST",
+      body: data,
+      cache: "no-store"
+    });
+    const duration = (performance.now() - start) / 1000;
+    return ((fileSizeMB * 8) / duration).toFixed(1);
+  } catch {
+    return null;
+  }
+}
+
+function getConnectionLabel(download) {
+  if (download === null) return "Offline";
+  if (download >= 100) return "Excellent";
+  if (download >= 50) return "Great";
+  if (download >= 20) return "Good";
+  if (download >= 5) return "Fair";
+  return "Slow";
+}
+
+async function runSpeedTest() {
+  const btn = document.getElementById("speedBtn");
+  const resultEl = document.getElementById("speedResult");
+  const loadingEl = document.getElementById("speedLoading");
+
+  btn.disabled = true;
+  btn.textContent = "Testing...";
+  resultEl.classList.remove("visible");
+  loadingEl.style.display = "flex";
+
+  document.getElementById("downloadSpeed").textContent = "-";
+  document.getElementById("uploadSpeed").textContent = "-";
+  document.getElementById("pingSpeed").textContent = "-";
+  document.getElementById("connectionStatus").textContent = "-";
+
+  const ping = await measurePing();
+  document.getElementById("pingSpeed").textContent = ping !== null ? ping : "N/A";
+
+  const download = await measureDownload();
+  document.getElementById("downloadSpeed").textContent = download !== null ? download : "N/A";
+
+  const upload = await measureUpload();
+  document.getElementById("uploadSpeed").textContent = upload !== null ? upload : "N/A";
+
+  document.getElementById("connectionStatus").textContent = getConnectionLabel(parseFloat(download));
+  document.getElementById("speedFooter").textContent = "Tested just now";
+
+  loadingEl.style.display = "none";
+  resultEl.classList.add("visible");
+
+  btn.disabled = false;
+  btn.textContent = "Run Speed Test";
+}
+
+// ── Init ─────────────────────────────────────────────
+
 if (localStorage.getItem("darkMode") === "true") {
   document.body.classList.add("dark-mode");
   document.getElementById("modeBtn").textContent = "☀️ Light";
