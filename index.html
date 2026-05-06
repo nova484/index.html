@@ -104,6 +104,60 @@
 
     </div>
 
+    <!-- Speed Test -->
+    <div class="speed-section">
+      <div class="speed-header">
+        <div class="app-label">⬡ Internet Speed Test</div>
+      </div>
+
+      <button class="speed-btn" onclick="runSpeedTest()" id="speedBtn">Run Speed Test</button>
+
+      <div id="speedLoading" class="loading-state">
+        <div class="loading-ring">
+          <svg width="120" height="120" viewBox="0 0 120 120">
+            <defs>
+              <path id="circle2" d="M 60,60 m -45,0 a 45,45 0 1,1 90,0 a 45,45 0 1,1 -90,0"/>
+            </defs>
+            <text font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#888880" letter-spacing="2">
+              <textPath href="#circle2">
+                TESTING YOUR SPEED ✦ PLEASE WAIT ✦ TESTING YOUR SPEED ✦
+              </textPath>
+            </text>
+          </svg>
+        </div>
+      </div>
+
+      <div id="speedResult" class="speed-result">
+        <div class="speed-grid">
+          <div class="speed-card">
+            <div class="stat-icon">⬇️</div>
+            <div class="stat-label">Download</div>
+            <div class="stat-value" id="downloadSpeed">-</div>
+            <div class="speed-unit">Mbps</div>
+          </div>
+          <div class="speed-card">
+            <div class="stat-icon">⬆️</div>
+            <div class="stat-label">Upload</div>
+            <div class="stat-value" id="uploadSpeed">-</div>
+            <div class="speed-unit">Mbps</div>
+          </div>
+          <div class="speed-card">
+            <div class="stat-icon">📡</div>
+            <div class="stat-label">Ping</div>
+            <div class="stat-value" id="pingSpeed">-</div>
+            <div class="speed-unit">ms</div>
+          </div>
+          <div class="speed-card">
+            <div class="stat-icon">🌐</div>
+            <div class="stat-label">Status</div>
+            <div class="stat-value" id="connectionStatus">-</div>
+          </div>
+        </div>
+        <div class="speed-footer" id="speedFooter"></div>
+      </div>
+
+    </div>
+
     <div class="signature">
       Made by Raymond — the No.1 Aura Farmer 👑 unlike Diauraless
     </div>
