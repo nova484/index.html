@@ -102,6 +102,29 @@ document.getElementById("cityInput").addEventListener("keydown", function (e) {
 
 // ── Speed Test ──────────────────────────────────────
 
+function countUp(elementId, targetValue, duration, suffix = "") {
+  const el = document.getElementById(elementId);
+  if (targetValue === null || targetValue === "N/A") {
+    el.textContent = "N/A";
+    return;
+  }
+  const target = parseFloat(targetValue);
+  const steps = 40;
+  const stepTime = duration / steps;
+  let current = 0;
+  const increment = target / steps;
+  const timer = setInterval(() => {
+    current += increment;
+    if (current >= target) {
+      current = target;
+      clearInterval(timer);
+    }
+    el.textContent = Number.isInteger(target)
+      ? Math.round(current) + suffix
+      : current.toFixed(1) + suffix;
+  }, stepTime);
+}
+
 async function measurePing() {
   const times = [];
   for (let i = 0; i < 5; i++) {
@@ -171,25 +194,44 @@ async function runSpeedTest() {
   document.getElementById("pingSpeed").textContent = "-";
   document.getElementById("connectionStatus").textContent = "-";
 
-  const ping = await measurePing();
-  document.getElementById("pingSpeed").textContent = ping !== null ? ping : "N/A";
+  // 12 second timeout — stops and gives final result
+  let timedOut = false;
+  const timeout = new Promise(resolve => {
+    setTimeout(() => {
+      timedOut = true;
+      resolve();
+    }, 12000);
+  });
 
-  const download = await measureDownload();
-  document.getElementById("downloadSpeed").textContent = download !== null ? download : "N/A";
+  let ping = null;
+  let download = null;
+  let upload = null;
 
-  const upload = await measureUpload();
-  document.getElementById("uploadSpeed").textContent = upload !== null ? upload : "N/A";
+  await Promise.race([
+    (async () => {
+      ping = await measurePing();
+      if (timedOut) return;
+      download = await measureDownload();
+      if (timedOut) return;
+      upload = await measureUpload();
+    })(),
+    timeout
+  ]);
 
-  document.getElementById("connectionStatus").textContent = getConnectionLabel(parseFloat(download));
-  document.getElementById("speedFooter").textContent = "Tested just now";
-
+  // Show results with count up animation
   loadingEl.style.display = "none";
   resultEl.classList.add("visible");
+
+  countUp("pingSpeed", ping, 800);
+  countUp("downloadSpeed", download, 1000);
+  countUp("uploadSpeed", upload, 1000);
+
+  document.getElementById("connectionStatus").textContent = getConnectionLabel(parseFloat(download));
+  document.getElementById("speedFooter").textContent = timedOut ? "Stopped after 12s" : "Tested just now";
 
   btn.disabled = false;
   btn.textContent = "Run Speed Test";
 }
-
 // ── Init ─────────────────────────────────────────────
 
 if (localStorage.getItem("darkMode") === "true") {
