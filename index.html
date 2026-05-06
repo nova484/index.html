@@ -10,7 +10,6 @@
 
   <div class="container">
 
-    <!-- Header -->
     <div class="header">
       <div class="app-label">⬡ Weather Monitor</div>
       <div class="header-right">
@@ -19,7 +18,6 @@
       </div>
     </div>
 
-    <!-- Search -->
     <div class="search-bar">
       <div class="search-wrapper">
         <span class="search-icon">🔍</span>
@@ -28,17 +26,15 @@
       <button onclick="getWeather()">Search</button>
     </div>
 
-    <!-- Error -->
     <div id="errorMsg" class="error-msg"></div>
 
-    <!-- Loading -->
     <div id="loadingState" class="loading-state">
       <div class="loading-ring">
         <svg width="120" height="120" viewBox="0 0 120 120">
           <defs>
             <path id="circle" d="M 60,60 m -45,0 a 45,45 0 1,1 90,0 a 45,45 0 1,1 -90,0"/>
           </defs>
-          <text font-family="IBM Plex Mono, monospace" font-size="9.5" fill="var(--muted)" letter-spacing="2">
+          <text font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#888880" letter-spacing="2">
             <textPath href="#circle">
               DIADEM &amp; ELLA ARE AURALESS ✦ DIADEM &amp; ELLA ARE AURALESS ✦
             </textPath>
@@ -47,7 +43,6 @@
       </div>
     </div>
 
-    <!-- Result -->
     <div id="result">
 
       <div class="main-card">
@@ -59,9 +54,7 @@
           </div>
           <div id="weatherIcon"></div>
         </div>
-
         <div class="divider"></div>
-
         <div class="temp-row">
           <div id="temp"></div>
           <div class="temp-meta">
@@ -106,12 +99,11 @@
 
       <div class="result-footer">
         <span id="lastUpdated"></span>
-        <span class="powered-by">OpenWeatherMap</span>
+        <span>OpenWeatherMap</span>
       </div>
 
     </div>
 
-    <!-- Signature -->
     <div class="signature">
       Made by Raymond — the No.1 Aura Farmer 👑 unlike Diauraless
     </div>
